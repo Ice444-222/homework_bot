@@ -79,7 +79,7 @@ def get_api_answer(timestamp):
 
 
 def check_response(response):
-    """Проверка на соответствие с документацией API
+    """Проверка на соответствие с документацией API/
     ответа от ЯндексПрактикума.
     """
     if not isinstance(response, dict):
