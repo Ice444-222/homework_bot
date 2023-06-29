@@ -41,7 +41,7 @@ logging.basicConfig(
 
 
 def check_tokens():
-    """Проверка глобальных переменных перед запуском бота"""
+    """Проверка глобальных переменных перед запуском бота."""
     if PRACTICUM_TOKEN and TELEGRAM_TOKEN and TELEGRAM_CHAT_ID is not None:
         return True
     logger.critical(exc.NoBotVariableError, exc_info=True)
@@ -49,7 +49,7 @@ def check_tokens():
 
 
 def send_message(bot, message):
-    """Отправка сообщения с информацией о домашней работы"""
+    """Отправка сообщения с информацией о домашней работы."""
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
         logger.debug('Сообщение удачно отправлено')
@@ -58,7 +58,7 @@ def send_message(bot, message):
 
 
 def get_api_answer(timestamp):
-    """Получение API ответа от ЯндексПрактикума"""
+    """Получение API ответа от ЯндексПрактикума."""
     payload = {'from_date': timestamp}
     try:
         response = requests.get(ENDPOINT, headers=HEADERS, params=payload)
@@ -79,8 +79,9 @@ def get_api_answer(timestamp):
 
 
 def check_response(response):
-    """Проверка на соответствие с документацией"""
-    """API ответа от ЯндексПрактикума"""
+    """
+    Проверка на соответствие с документацией API ответа от ЯндексПрактикума.
+    """
     if not isinstance(response, dict):
         message = 'Неправильный тип данных в API ответе'
         logging.error(message)
@@ -101,7 +102,7 @@ def check_response(response):
 
 
 def parse_status(homework):
-    """Получение статуса домашней работы с API ответа"""
+    """Получение статуса домашней работы с API ответа."""
     try:
         status = homework.get('status')
         verdict = HOMEWORK_VERDICTS.get(status)
@@ -120,7 +121,7 @@ def parse_status(homework):
 
 
 def main():
-    """Запуск работы бота по отслеживанию статуса домашней работы"""
+    """Запуск работы бота по отслеживанию статуса домашней работы."""
     check_tokens()
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     timestamp = 1549962000
