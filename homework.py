@@ -79,9 +79,8 @@ def get_api_answer(timestamp):
 
 
 def check_response(response):
-    """
-    Проверка на соответствие с документацией API ответа от ЯндексПрактикума.
-    """
+    """Проверка на соответствие с документацией API
+    ответа от ЯндексПрактикума."""
     if not isinstance(response, dict):
         message = 'Неправильный тип данных в API ответе'
         logging.error(message)
