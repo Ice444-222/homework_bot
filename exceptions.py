@@ -2,17 +2,9 @@ class NoBotVariableError(Exception):
     pass
 
 
-class WrongApiAnswerError(Exception):
+class NoHomeworkNameInHomeworkError(Exception):
     pass
 
 
-class NoCurrentHomeworkError(Exception):
-    pass
-
-
-class GetApiError(Exception):
-    pass
-
-
-class Code200Error(Exception):
+class NoKeysInResponseError(Exception):
     pass
