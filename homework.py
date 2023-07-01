@@ -34,13 +34,6 @@ logger = logging.getLogger(__name__)
 handler = StreamHandler(stream=sys.stdout)
 logger.addHandler(handler)
 
-if __name__ == '__main__':
-    logging.basicConfig(
-        level=logging.DEBUG,
-        filename=Path(__file__).resolve().parent / 'main.log',
-        filemode='a'
-    )
-
 
 def check_tokens():
     """Проверка глобальных переменных перед запуском бота."""
@@ -63,7 +56,7 @@ def send_message(bot, message):
         logger.error(
             error_text
         )
-        raise error(error_text)
+        raise exc.BotSendMessageError(error_text) from error
 
 
 def get_api_answer(timestamp):
@@ -72,10 +65,12 @@ def get_api_answer(timestamp):
     try:
         response = requests.get(ENDPOINT, headers=HEADERS, params=payload)
     except requests.RequestException as error:
-        raise error(f'Ошибка при обращении к API: {error}')
+        raise exc.ApiCallError(
+            f'Ошибка при обращении к API: {error}'
+        ) from error
 
     if response.status_code != HTTPStatus.OK:
-        raise requests.exceptions.HTTPError(
+        raise exc.HttpAnswerError(
             f'Запрос к API получил код ошибки:'
             f' {response.status_code}'
         )
@@ -83,7 +78,9 @@ def get_api_answer(timestamp):
     try:
         return response.json()
     except ValueError as error:
-        raise error(f'Ошибка при преобразовании ответа в JSON: {error}')
+        raise exc.JsonConvertError(
+            f'Ошибка при преобразовании ответа в JSON: {error}'
+        ) from error
 
 
 def check_response(response):
@@ -92,11 +89,13 @@ def check_response(response):
     """
     if not isinstance(response, dict):
         raise TypeError(f'Тип данных в API ответе не dict, a {type(response)}')
-    if ('homeworks' or 'current_date') not in response:
-        message = (
-            'В ответе отсутствует ключ(и) "homeworks" и(или) "current_date"'
-        )
-        raise exc.NoKeysInResponseError(message)
+
+    for key in ('homeworks', 'current_date'):
+        if key not in response:
+            message = (
+                f'В ответе отсутствует ключ {key}'
+            )
+            raise exc.NoKeysInResponseError(message)
     homeworks = response.get('homeworks')
     if not isinstance(homeworks, list):
         message = (f'В ответе API ключ homeworks не в виде list,'
@@ -151,6 +150,9 @@ def main():
         except IndexError:
             logger.debug(f'Список домашних заданий за период {timestamp} пуст')
 
+        except exc.BotSendMessageError:
+            logger.error('Не удалось отправить сообщение')
+
         except Exception as error:
             if str(previous_error) != str(error):
                 message = f'Сбой в работе программы: {error}'
@@ -163,4 +165,10 @@ def main():
 
 
 if __name__ == '__main__':
+    logging.basicConfig(
+        level=logging.DEBUG,
+        filename=Path(__file__).resolve().parent / 'main.log',
+        filemode='a'
+    )
+
     main()
