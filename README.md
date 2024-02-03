@@ -1,12 +1,14 @@
-# Telegram-Бот для сервиса Практикум.Домашка
+# Telegram Bot for Yandex.Praktikum Homework Service
 
-Цель этого бота оповещать пользователя о статусе ревью домашней работы на сервисе Яндекс Практикум - Яндекс.Домашка.
-Бот парсит статус ревью через API сервис каждые 10 минут, и если статус поменялся, бот оповещает пользователя.
+The goal of this bot is to notify users about the status of their homework 
+reviews on the Yandex.Praktikum - Yandex.Homework service. The bot periodically checks 
+the review status via the service's API every 10 minutes, and if the status changes, 
+it sends a notification to the user.
 
 
-## Как запустить проект: 
+## How to Run the Project:
 
-Клонировать репозиторий и перейти в него в командной строке: 
+Clone the repository and navigate to it in the command line:
 
 ```
 git clone git@github.com:Ice444-222/homework_bot.git 
@@ -16,14 +18,14 @@ git clone git@github.com:Ice444-222/homework_bot.git
 cd homework_bot
 ```
 
-Cоздать и активировать виртуальное окружение:
+Create and activate a virtual environment:
 ```
 python3 -m venv env
 ```
 ```
 source env/bin/activate
 ```
-Установить зависимости из файла requirements.txt:
+Install dependencies from the requirements.txt file:
 ```
 python3 -m pip install --upgrade pip
 ```
@@ -32,7 +34,7 @@ python3 -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-## Стек технологий:
+## Technology Stack:
 
 ```
 Python 3.9.10
@@ -40,16 +42,16 @@ python-telegram-bot 13.7
 requests 2.26.0
 ```
 
-## Описание работы:
-В функции main() описана основная логика работы программы, которая состоит из следующих функций:
+## Description of Operation:
+The main logic of the program is described in the main() function, which consists of the following functions:
 ```
-get_api_answer(): посылает запрос к единственному эндпойнту API Практикум.Домашки, возвращает информацию о последней работе
-parse_status(): извлекает из информации о работе ее текущий статус и название
-send_message(): отправляет сообщение в телеграм-чат
+get_api_answer(): Sends a request to the only API endpoint of the Yandex.Homework service, returns information about the latest homework.
+parse_status(): Extracts the current status and title of the homework from the information.
+send_message(): Sends a message to the Telegram chat.
 ```
 
-## Переменные окружения:
-Токен для доступа к API Практикум.Домашки (PRAKTIKUM_TOKEN), токен телеграм-бота (TELEGRAM_TOKEN) и
-id телеграм-чата (TELEGRAM_CHAT_ID) безопаснее хранить не прямо в коде,
-а в переменных окружения. "Место" хранения зависит от того, как вы
-деплоите проект: можно хранить их локально в папке .env.
+## Environment Variables:
+It is safer to store the tokens for accessing the Yandex.Homework API (PRAKTIKUM_TOKEN),
+Telegram bot token (TELEGRAM_TOKEN), and Telegram chat ID (TELEGRAM_CHAT_ID) not directly in 
+the code but in environment variables. The "location" of storing them depends on 
+how you deploy the project; you can store them locally in the .env folder.
