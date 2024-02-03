@@ -1,7 +1,7 @@
-# Telegram Bot for Yandex.Praktikum Homework Service
+# Telegram Bot for Yandex.Practicum Homework Service
 
 The goal of this bot is to notify users about the status of their homework 
-reviews on the Yandex.Praktikum - Yandex.Homework service. The bot periodically checks 
+reviews on the Yandex.Practicum - Yandex.Homework service. The bot periodically checks 
 the review status via the service's API every 10 minutes, and if the status changes, 
 it sends a notification to the user.
 
